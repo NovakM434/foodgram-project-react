@@ -1,7 +1,6 @@
 from collections import Counter
 
-from djoser.serializers import (UserSerializer as DjoserUserSerializer,
-                                UserSerializer)
+from djoser.serializers import (UserSerializer as DjoserUserSerializer)
 from rest_framework import status
 from django.core.validators import RegexValidator
 from django.db.transaction import atomic
@@ -82,14 +81,6 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         fields = ('id', 'name', 'measurement_unit', 'amount')
-
-
-class RecipeIngredientCreateSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='ingredient.id')
-
-    class Meta:
-        model = RecipeIngredient
-        fields = ('id', 'amount', 'ingredient')
 
 
 class RecipeSerializer(serializers.ModelSerializer):
