@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Список покупок</title>
+    <style>
+        body {
+            font-family: DejaVuSerif, serif;
+            font-size: 16px;
+        }
+
+        h1 {
+            font-size: 16px;
+        }
+
+        .ingredient {
+            margin-left: 20px;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;"><h1>Список покупок пользователя "{{ username }}":</h1></div>
+    <br><br>
+        {% for ingredient in ingredients %}
+            <div class="ingredient">
+                {{ forloop.counter }}. {{ ingredient.ingredient__name }} -
+                {{ ingredient.total_amount }}
+                {{ ingredient.ingredient__measurement_unit }}
+            </div>
+        {% endfor %}
+
+    <div class="footer">
+        Список создан {{ current_date }}<br>
+    </div>
+</body>
+</html>
