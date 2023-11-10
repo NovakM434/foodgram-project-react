@@ -308,66 +308,6 @@ class RecipesWriteSerializer(serializers.ModelSerializer):
         return data
 
     @staticmethod
-    def validate_ingredients(ingredients):
-        """Проверка ингредиентов на уникальность и минимальное количество."""
-
-        ingredients_lst = [ingredient.get('id') for ingredient in ingredients]
-        ingredient_counter = Counter(ingredients_lst)
-
-        if any(count > 1 for count in ingredient_counter.values()):
-            raise ValidationError(
-                [{'ingredients': ['Ингредиенты не должны повторяться.']}]
-            )
-
-        if any(int(ingredient.get('amount')) < 1 for ingredient in
-               ingredients):
-            raise ValidationError(
-                [{
-                    'ingredients':
-                        ['Количество ингредиента не может быть меньше 1']
-                }]
-            )
-
-        return ingredients
-
-    @staticmethod
-    def validate_tags(tags):
-        """Проверка тэгов на уникальность."""
-
-        existing_tags = [tag.name for tag in Tags.objects.all()]
-        received_tags = [tag.name for tag in tags]
-
-        if not tags:
-            raise ValidationError(
-                'Нужно выбрать хотя бы один тэг'
-            )
-
-        for tag in received_tags:
-            if tag not in existing_tags:
-                raise ValidationError(
-                    f'Тэг {tag} не существует'
-                )
-
-        if len(set(tags)) != len(tags):
-            raise ValidationError(
-                'Теги должны быть уникальными'
-            )
-
-        return tags
-
-    def validate_cooking_time(self, data):
-        """Проверка времени приготовления."""
-
-        cooking_time = self.initial_data.get('cooking_time')
-
-        if int(cooking_time) < 1:
-            raise ValidationError(
-                'Время приготовления не может быть меньше 1 минуты'
-            )
-
-        return data
-
-    @staticmethod
     def add_ingredients(ingredients, recipe):
         """Добавление ингредиентов."""
 
