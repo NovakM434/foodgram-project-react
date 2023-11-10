@@ -12,8 +12,9 @@ class UserAdmin(UserAdmin):
     """Приложение users."""
 
     list_display = (
-        'id', 'username', 'email', 'first_name', 'last_name'
-    )
+        'id', 'username', 'email', 'first_name', 'last_name',
+        'get_recipes_count', 'get_followers_count')
+    readonly_fields = ('get_recipes_count', 'get_followers_count')
     list_display_links = ('username', 'email')
     search_fields = ('username', 'email')
     list_filter = ('username', 'email')

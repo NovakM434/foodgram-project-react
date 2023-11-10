@@ -1,12 +1,15 @@
+import os
 from pathlib import Path
+
+from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-(pp)6hwv!^8ao_*!m3c00m5-3dm4@a2%)sz6^(v-jf&ew26a1f'
+SECRET_KEY = get_random_secret_key()
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost, 127.0.0.1').split(', ')
 
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
@@ -100,7 +103,7 @@ REST_FRAMEWORK = {
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 

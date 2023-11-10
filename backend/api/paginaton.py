@@ -7,3 +7,4 @@ class LimitPagination(PageNumberPagination):
     элементов, равного значению параметра limit в запросе.
     """
     page_size_query_param = 'limit'
+    page_size = 6

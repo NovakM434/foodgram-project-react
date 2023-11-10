@@ -173,6 +173,9 @@ class Favorite(models.Model):
     class Meta:
         verbose_name = 'Избранное'
 
+    def __str__(self):
+        return f"Пользователь {self.user} добавил {self.recipe} в избранное"
+
 
 class ShoppingList(models.Model):
     """Класс для списка покупок."""
