@@ -41,3 +41,18 @@ services:
     depends_on:
       - backend
       - frontend
+  backend:
+    container_name: foodgram_backend
+    build: ../backend/
+    command: |
+      bash -c 'python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      cp -r /app/collected_static/. /app/static/ &&
+      gunicorn --bind 0:8000 foodgram.wsgi'
+    env_file:
+      - ./.env
+    volumes:
+      - static:/app/static/
+      - media:/app/media/
+    depends_on:
+      - db
