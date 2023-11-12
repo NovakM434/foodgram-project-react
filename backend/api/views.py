@@ -121,6 +121,10 @@ class RecipesViewSet(viewsets.ModelViewSet, BaseRecipeMixin):
                 is_favorited=Exists(Favorite.objects.filter(
                     user=self.request.user,
                     recipe_id=OuterRef('pk'),
+                )),
+                is_in_shopping_cart=Exists(ShoppingList.objects.filter(
+                    user=self.request.user,
+                    recipe_id=OuterRef('pk'),
                 ))
             ).select_related('author')
 
