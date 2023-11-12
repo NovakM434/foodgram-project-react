@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -62,7 +63,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-        ordering = ('id',)
+        ordering = ('name', 'username')
 
     def __str__(self):
         return self.username
@@ -92,7 +93,13 @@ class Follow(models.Model):
                 name='unique_following'
             ),
         )
-        ordering = ('id',)
+        ordering = ('author')
 
     def __str__(self):
         return f'Подписка {self.follower} на {self.author}'
+
+    def clean(self):
+        super().clean()
+        if self.follower == self.author:
+            raise ValidationError(
+                'Пользователь не может подписаться сам на себя')
