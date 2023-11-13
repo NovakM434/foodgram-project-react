@@ -200,7 +200,6 @@ class TagsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tags.objects.all()
     serializer_class = TagsSerializer
     permission_classes = (AllowAny, )
-    pagination_class = None
     filter_backends = (DjangoFilterBackend,)
     filterset_field = ('name',)
 
@@ -209,7 +208,6 @@ class IngredientsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientsSerializer
     permission_classes = (permissions.AllowAny,)
-    pagination_class = None
     filter_backends = (SearchFilter, DjangoFilterBackend,)
     filterset_class = IngredientFilter
     search_fields = ('name',)
