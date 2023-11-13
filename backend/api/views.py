@@ -126,7 +126,7 @@ class RecipesViewSet(viewsets.ModelViewSet, BaseRecipeMixin):
                     user=self.request.user,
                     recipe_id=OuterRef('pk'),
                 ))
-            ).select_related('author')
+            ).select_related('author').order_by('id')
 
             return queryset
 
