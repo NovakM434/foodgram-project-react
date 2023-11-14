@@ -36,7 +36,7 @@ class SignUpSerializer(DjoserUserSerializer):
         read_only_fields = ['id', ]
 
     def validate(self, data):
-        if (data.get('username').lower()) == 'me':
+        if data.get('username').lower() == 'me':
             raise serializers.ValidationError(
                 'Имя пользователя "me" зарезервировано в системе'
             )
@@ -115,7 +115,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorite
-        fields = '__all__'
+        fields = ('user', 'recipe')
         read_only_fields = ['id']
         validators = (
             UniqueTogetherValidator(

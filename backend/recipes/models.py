@@ -1,6 +1,7 @@
 from colorfield.fields import ColorField
 
-from django.core.validators import RegexValidator, MinValueValidator
+from django.core.validators import RegexValidator, MinValueValidator, \
+    MaxValueValidator
 from django.db import models
 
 from users.models import User
@@ -95,7 +96,7 @@ class Recipe(models.Model):
         verbose_name='Описание',
         help_text='Введите описание рецепта'
     )
-    cooking_time = models.IntegerField(
+    cooking_time = models.PositiveSmallIntegerField(
         blank=False,
         null=False,
         validators=(
@@ -103,6 +104,10 @@ class Recipe(models.Model):
                 limit_value=1,
                 message='Время приготовления не может быть меньше 1 минуты'
             ),
+            MaxValueValidator(
+                limit_value=600,
+                message='Время приготовления не может быть больше 10 часов'
+            )
         ),
         verbose_name='Время приготовления (мин.)',
         help_text='Укажите время приготовления в минутах'
@@ -153,47 +158,37 @@ class RecipeIngredient(models.Model):
         return self.recipe.name
 
 
-class Favorite(models.Model):
-
+class FavoriteAndShoppingAbstarctModel(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='favorites',
         verbose_name='Пользователь',
         help_text='Выберите пользователя'
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='favorites',
         verbose_name='Рецепт',
         help_text='Выберите рецепт'
     )
 
     class Meta:
+        abstract = True
+
+
+class Favorite(FavoriteAndShoppingAbstarctModel):
+    """"Класс для избранного"""
+
+    class Meta:
         verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранные'
 
     def __str__(self):
         return f"Пользователь {self.user} добавил {self.recipe} в избранное"
 
 
-class ShoppingList(models.Model):
+class ShoppingList(FavoriteAndShoppingAbstarctModel):
     """Класс для списка покупок."""
-
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='shopping_list',
-        verbose_name='Пользователь',
-        help_text='Выберите пользователя'
-    )
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='shopping_list',
-        verbose_name='Рецепт',
-        help_text='Выберите рецепт'
-    )
 
     class Meta:
         verbose_name = 'Список покупок'

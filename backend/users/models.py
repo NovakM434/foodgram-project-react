@@ -1,18 +1,17 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 
 from api.validators import validate_username
 
-first_constant = 150
-second_constant = 254
+FIRST_CONSTANT = 150
+SECOND_CONSTANT = 254
 
 
 class User(AbstractUser):
 
     email = models.EmailField(
-        max_length=second_constant,
+        max_length=SECOND_CONSTANT,
         unique=True,
         blank=False,
         null=False,
@@ -27,7 +26,7 @@ class User(AbstractUser):
                 message='Недопустимый символ в username'
             ), validate_username
         ),
-        max_length=first_constant,
+        max_length=FIRST_CONSTANT,
         unique=True,
         blank=False,
         null=False,
@@ -35,13 +34,13 @@ class User(AbstractUser):
         help_text='Имя пользователя'
     )
     first_name = models.CharField(
-        max_length=first_constant,
+        max_length=FIRST_CONSTANT,
         blank=False,
         verbose_name='Имя',
         help_text='Введите имя'
     )
     last_name = models.CharField(
-        max_length=first_constant,
+        max_length=FIRST_CONSTANT,
         blank=False,
         verbose_name='Фамилия',
         help_text='Введите фамилию'
@@ -63,7 +62,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-        ordering = ('name', 'username')
+        ordering = ('username',)
 
     def __str__(self):
         return self.username
@@ -92,14 +91,12 @@ class Follow(models.Model):
                 fields=('author', 'follower'),
                 name='unique_following'
             ),
+            models.CheckConstraint(
+                name="%(app_label)s_%(class)s_prevent_self_follow",
+                check=~models.Q(follower=models.F("author")),
+            ),
         )
-        ordering = ('author')
+        ordering = ('author',)
 
     def __str__(self):
         return f'Подписка {self.follower} на {self.author}'
-
-    def clean(self):
-        super().clean()
-        if self.follower == self.author:
-            raise ValidationError(
-                'Пользователь не может подписаться сам на себя')
