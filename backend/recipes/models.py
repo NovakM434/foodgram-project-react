@@ -1,15 +1,16 @@
 from colorfield.fields import ColorField
 
-from django.core.validators import RegexValidator, MinValueValidator, \
-    MaxValueValidator
+from django.core.validators import (RegexValidator, MinValueValidator,
+                                    MaxValueValidator)
 from django.db import models
 
+from api.constants import THIRD_CONSTANT
 from users.models import User
 
 
 class Tags(models.Model):
     name = models.CharField(
-        max_length=300,
+        max_length=THIRD_CONSTANT,
         unique=True,
         verbose_name='Название Тэга',
         help_text='Введите название тэга'
@@ -22,7 +23,7 @@ class Tags(models.Model):
         help_text='Цвет в HEX (Например, #00FF00)'
     )
     slug = models.CharField(
-        max_length=200,
+        max_length=THIRD_CONSTANT,
         validators=(
             RegexValidator(
                 regex=r'^[-a-zA-Z0-9_]+$',
@@ -43,12 +44,12 @@ class Ingredient(models.Model):
     """Модель для ингредиентов."""
 
     name = models.CharField(
-        max_length=150,
+        max_length=THIRD_CONSTANT,
         verbose_name='Название ингредиента',
         help_text='Введите название ингредиента'
     )
     measurement_unit = models.CharField(
-        max_length=50,
+        max_length=THIRD_CONSTANT,
         verbose_name='Единица измерения',
         help_text='Введите единицу измерения'
     )
@@ -71,7 +72,7 @@ class Recipe(models.Model):
         related_name='recipes',
         help_text='Укажите автора рецепта'
     )
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=THIRD_CONSTANT)
     image = models.ImageField(
         null=False,
         upload_to='recipes/images/',
@@ -135,6 +136,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+        ordering = ('-pub_date',)
 
 
 class RecipeIngredient(models.Model):
@@ -154,8 +156,14 @@ class RecipeIngredient(models.Model):
     )
     amount = models.PositiveIntegerField()
 
+    class Meta:
+        ordering = ('id',)
+
     def __str__(self):
-        return self.recipe.name
+        return (
+            f'Ингредиенты для "{self.recipe}": {self.ingredient} - '
+            f'{self.amount}'
+        )
 
 
 class FavoriteAndShoppingAbstarctModel(models.Model):
@@ -182,6 +190,7 @@ class Favorite(FavoriteAndShoppingAbstarctModel):
     class Meta:
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
+        ordering = ('id',)
 
     def __str__(self):
         return f"Пользователь {self.user} добавил {self.recipe} в избранное"

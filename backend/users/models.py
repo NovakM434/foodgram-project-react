@@ -2,10 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
+from api.constants import (SECOND_CONSTANT, FIRST_CONSTANT)
 from api.validators import validate_username
-
-FIRST_CONSTANT = 150
-SECOND_CONSTANT = 254
 
 
 class User(AbstractUser):
