@@ -12,7 +12,7 @@ from rest_framework import permissions, status, viewsets
 from django.db.models import Exists, OuterRef
 
 from users.models import Follow, User
-from .filters import RecipesFiltering, IngredientFilter
+from .filters import RecipeFilter, IngredientFilter
 from recipes.models import (Ingredient, Favorite, Tags, Recipe, ShoppingList)
 from .pagination import LimitPagination
 from .permissions import IsAuthor, IsAdmin
@@ -107,7 +107,7 @@ class RecipesViewSet(viewsets.ModelViewSet, BaseRecipeMixin):
     serializer_class = RecipesWriteSerializer
     permission_classes = ((IsAuthor | IsAdmin),)
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = RecipesFiltering
+    filterset_class = RecipeFilter
     pagination_class = LimitPagination
 
     def get_queryset(self):
