@@ -14,7 +14,7 @@ from django.db.models import Exists, OuterRef
 from users.models import Follow, User
 from .filters import RecipeFilter, IngredientFilter
 from recipes.models import (Ingredient, Favorite, Tags, Recipe, ShoppingList)
-from .pagination import LimitPagination
+from .paginator import LimitPagination
 from .permissions import IsAuthor, IsAdmin
 from .serializers import (TagsSerializer, IngredientsSerializer,
                           FavoriteSerializer, ShortRecipeSerializer,
