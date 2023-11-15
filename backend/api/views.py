@@ -201,7 +201,6 @@ class TagsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TagsSerializer
     permission_classes = (AllowAny, )
     filter_backends = (DjangoFilterBackend,)
-    filterset_field = ('name',)
 
 
 class IngredientsViewSet(viewsets.ReadOnlyModelViewSet):
