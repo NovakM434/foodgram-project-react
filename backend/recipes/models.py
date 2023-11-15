@@ -1,6 +1,7 @@
 from colorfield.fields import ColorField
 
-from django.core.validators import (MinValueValidator, MaxValueValidator)
+from django.core.validators import (RegexValidator, MinValueValidator,
+                                    MaxValueValidator)
 from django.db import models
 
 from api.constants import THIRD_CONSTANT
@@ -21,7 +22,15 @@ class Tags(models.Model):
         verbose_name='Цвет',
         help_text='Цвет в HEX (Например, #00FF00)'
     )
-    slug = models.CharField(max_length=THIRD_CONSTANT)
+    slug = models.CharField(
+        max_length=THIRD_CONSTANT,
+        validators=(
+            RegexValidator(
+                regex=r'^[-a-zA-Z0-9_]+$',
+                message='В слаге содержится недопустимый символ'
+            ),
+        ),
+    )
 
     class Meta:
         verbose_name = 'Тэг'
