@@ -64,3 +64,7 @@ POST - Изменить пароль.
 
 POST - Получить токен. DELETE - Удалить токен.
 
+Админка - 
+email: apbhueta@yahoo.com
+password: 89261280033
+Ссылка на проект - http://fooodgram-byroman.gotdns.ch/
