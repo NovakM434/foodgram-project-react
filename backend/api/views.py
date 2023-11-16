@@ -101,7 +101,6 @@ class BaseRecipeMixin:
         )
 
 
-
 class RecipesViewSet(viewsets.ModelViewSet, BaseRecipeMixin):
     """Вьюсет для создания объектов класса Recipe."""
 

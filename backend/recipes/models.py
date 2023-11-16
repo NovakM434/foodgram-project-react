@@ -62,6 +62,7 @@ class Ingredient(models.Model):
         return f'{self.name}'
 
 
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
