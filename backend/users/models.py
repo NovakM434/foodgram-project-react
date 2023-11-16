@@ -17,6 +17,7 @@ class User(AbstractUser):
         help_text='Введите электронную почту'
     )
 
+
     username = models.CharField(
         validators=(
             RegexValidator(
