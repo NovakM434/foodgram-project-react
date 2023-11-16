@@ -72,7 +72,15 @@ class Recipe(models.Model):
         related_name='recipes',
         help_text='Укажите автора рецепта'
     )
-    name = models.CharField(max_length=THIRD_CONSTANT)
+    name = models.CharField(
+        max_length=THIRD_CONSTANT,
+        validators=(
+            RegexValidator(
+                regex=r'^[-a-zA-Z0-9_]+$',
+                message='В слаге содержится недопустимый символ'
+            ),
+        ),
+    )
     image = models.ImageField(
         null=False,
         upload_to='recipes/images/',
