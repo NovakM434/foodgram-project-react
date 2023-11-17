@@ -32,7 +32,7 @@ def get_shopping_cart_ingredients(user):
     """Запрос для получения ингредиентов для списка покупок."""
 
     ingredients = RecipeIngredient.objects.filter(
-        recipe__shopping_list__user=user
+        recipe__shopping_list_entries=user
     ).order_by(
         'ingredient__name'
     ).values(

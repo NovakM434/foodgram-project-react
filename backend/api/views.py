@@ -175,7 +175,7 @@ class RecipesViewSet(viewsets.ModelViewSet, BaseRecipeMixin):
     def download_shopping_cart(self, request):
         """Скачивание списка покупок, если он есть."""
 
-        if not request.user.shopping_list.exists():
+        if not request.user.shopping_list_recipes.exists():
             return Response({'errors': 'Корзина пуста'},
                             status=status.HTTP_400_BAD_REQUEST)
 

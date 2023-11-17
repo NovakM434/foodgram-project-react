@@ -62,7 +62,6 @@ class Ingredient(models.Model):
         return f'{self.name}'
 
 
-
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -75,12 +74,12 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         max_length=THIRD_CONSTANT,
-        validators=(
+        validators=[
             RegexValidator(
-                regex=r'^[-a-zA-Z0-9_]+$',
-                message='В слаге содержится недопустимый символ'
-            ),
-        ),
+                regex='^(?=.*[a-zA-Z\u0400-\u04FF]).+$',
+                message='Нельзя создавать рецепт только из цифр или знаков'
+            )
+        ]
     )
     image = models.ImageField(
         null=False,
